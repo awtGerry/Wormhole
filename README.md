@@ -1,7 +1,30 @@
-# Tauri + React + Typescript
+# Wormhole
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+# Dependencias
+### Arch
+```sh
+sudo pacman -S --needed \
+    webkit2gtk \
+    base-devel \
+    curl \
+    wget \
+    file \
+    openssl \
+    appmenu-gtk-module \
+    gtk3 \
+    libappindicator-gtk3 \
+    librsvg \
+    libvips
+```
+### Debian
+```sh
+sudo apt install libwebkit2gtk-4.0-dev \
+    build-essential \
+    curl \
+    wget \
+    file \
+    libssl-dev \
+    libgtk-3-dev \
+    libayatana-appindicator3-dev \
+    librsvg2-dev
+```
