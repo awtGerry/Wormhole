@@ -11,9 +11,14 @@ fn home_dir() -> Vec<String> {
     // format!("{}", res)
 }
 
+#[tauri::command]
+fn open_dir(dirname: String) {
+    files::move_to(dirname.as_str());
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![home_dir])
+        .invoke_handler(tauri::generate_handler![home_dir, open_dir])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

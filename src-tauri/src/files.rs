@@ -1,7 +1,7 @@
 #![allow(unused)]
 #![allow(unused_imports)]
 
-use std::fs::File;
+use std::{fs::File, path::Path};
 use std::env;
 use users::{get_user_by_uid, get_current_uid, os::unix::UserExt};
 
@@ -14,8 +14,10 @@ pub fn read_home_dir() -> Vec<String> {
                 match path {
                     Ok(path) => {
                         let path = path.path();
-                        let path = path.to_str().unwrap();
-                        result.push(path.to_string());
+                        if !is_dotfile(&path) {
+                            let path = path.to_str().unwrap();
+                            result.push(path.to_string());
+                        }
                     }
                     Err(_) => {}
                 }
@@ -24,6 +26,11 @@ pub fn read_home_dir() -> Vec<String> {
         }
         Err(_) => Vec::new(),
     }
+}
+
+fn is_dotfile(path: &Path) -> bool {
+    let file = path.file_name().unwrap().to_str().unwrap();
+    file.to_string().starts_with('.')
 }
 
 pub fn create_file(name: &str) -> bool {
@@ -42,13 +49,11 @@ pub fn create_folder(name: &str) -> bool {
     }
 }
 
-pub fn move_to(file_name: &str) {
-    let user = get_user_by_uid(get_current_uid()).unwrap();
-    let dir = user.home_dir().join(file_name);
-    match env::set_current_dir(dir) {
+pub fn move_to(file_path: &str) {
+    let file_name = Path::new(file_path).file_name().unwrap().to_str().unwrap();
+    match env::set_current_dir(file_path) {
         Ok(_) => {
             println!("File opened: {}", file_name);
-            create_file("test.txt");
         }
         Err(_) => {
             println!("File not found");

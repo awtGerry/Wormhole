@@ -5,11 +5,15 @@ import "./App.css";
 
 function App() {
   const [dirs, setDirs] = useState<string[]>([]);
+  const [dirToOpen, setDirToOpen] = useState<string>("");
 
   async function dir() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
     setDirs(await invoke("home_dir"));
-    // setDirs(await invoke("home_dir"));
+  }
+
+  const openDir = (dirname: string) => {
+    invoke("open_dir", { dirname })
   }
 
   return (
@@ -27,7 +31,25 @@ function App() {
 
 
       {dirs.map((dir) => (
-        <a>{dir}</a>
+        <form
+          className="row"
+          onSubmit={(e) => {
+            e.preventDefault();
+            openDir(dir);
+          }}
+        >
+          <button type="submit">{dir}</button>
+        </form>
+        /* <form */
+        /*   className="row" */
+        /*   onSubmit={(e) => { */
+        /*     e.preventDefault; */
+        /*     {/1* openDir(dir); *1/} */
+        /*   }} */
+        /* > */
+        /*   <button type="submit">{dir}</button> */
+        /* </form> */
+        // <button>{dir}</button>
       ))}
     </div>
   );
