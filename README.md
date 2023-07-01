@@ -1,6 +1,11 @@
 # Wormhole
 
-# Dependencias
+# Tecnologies
+- [tauri](https://tauri.app/)
+- [pnpm](https://pnpm.io/)
+- [react](https://legacy.reactjs.org/)
+- [vite](https://vitejs.dev/)
+## Dependencies
 ### Arch
 ```sh
 sudo pacman -S --needed \
