@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
+type DirDetails = {
+  path: string;
+  name: string;
+  size: number;
+  metadata: string;
+};
+
 function App() {
   const [dirContent, setDirContent] = useState<string[]>([]);
   const [directory, setDirectory] = useState("");
@@ -9,12 +16,18 @@ function App() {
   const [clickCount, setClickCount] = useState(0);
   const [lastClickTime, setLastClickTime] = useState(0);
 
+  const [dirD, setDirD] = useState<DirDetails[]>([]);
+
   useEffect(() => {
     onCreate();
   }, []);
 
+  {/* const onCreate = async () => { */}
+  {/*   setDirContent(await invoke("home_dir")); */}
+  {/* } */}
+
   const onCreate = async () => {
-    setDirContent(await invoke("home_dir"));
+    setDirD(await invoke("home_dir"));
   }
 
   const openDir = async (dirname : string) => {
@@ -22,14 +35,14 @@ function App() {
   }
 
   const goBack = async () => {
-    setDirContent(await invoke("go_back"));
+    setDirContent(await invoke("go_back", { directory }));
   }
 
   return (
     <div className="container">
       <button onClick={goBack}>Go Back</button>
       <h1>Wormhole</h1>
-      {dirContent.map((dir) => (
+      {dirD.map((dir) => (
         <form
           className="row"
           onSubmit={(e) => {
@@ -41,11 +54,11 @@ function App() {
             } else {
               setClickCount(clickCount + 1);
               setLastClickTime(now);
-              setDirectory(dir);
+              setDirectory(dir.path);
             }
           }}
         >
-          <button type="submit">{dir}</button>
+          <button type="submit">{dir.path}</button>
         </form>
       ))}
     </div>

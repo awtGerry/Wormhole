@@ -150,16 +150,8 @@ pub fn read_home_dir() -> Vec<String> {
     }
 }
 
-pub fn go_back() -> Vec<String> {
-    if let Some(parent) = Path::new(".").parent() {
-        if let Err(e) = env::set_current_dir(parent) {
-            println!("Error: {}", e);
-            Vec::new()
-        } else {
-            let path = parent.to_str().unwrap();
-            move_to(path)
-        }
-    } else {
-        Vec::new()
-    }
+pub fn go_back(dir_path: &str) -> Vec<String> {
+    let path = Path::new(dir_path);
+    let parent = path.parent().unwrap().to_str().unwrap();
+    move_to(parent)
 }
