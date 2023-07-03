@@ -8,13 +8,16 @@ mod files;
 #[tauri::command]
 fn home_dir() -> Vec<String> {
     files::read_home_dir()
-    // format!("{}", res)
 }
 
 #[tauri::command]
 fn open_dir(dirname: &str) -> Vec<String> {
     files::move_to(dirname)
-    // format!("Hello, {}", dirname)
+}
+
+#[tauri::command]
+fn go_back() -> Vec<String> {
+    files::go_back()
 }
 
 fn main() {

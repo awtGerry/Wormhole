@@ -21,8 +21,13 @@ function App() {
     setDirContent(await invoke("open_dir", { dirname }));
   }
 
+  const goBack = async () => {
+    setDirContent(await invoke("go_back"));
+  }
+
   return (
     <div className="container">
+      <button onClick={goBack}>Go Back</button>
       <h1>Wormhole</h1>
       {dirContent.map((dir) => (
         <form
@@ -31,7 +36,7 @@ function App() {
             e.preventDefault();
             const now = new Date().getTime();
             const timeSinceLastClick = now - lastClickTime;
-            if (timeSinceLastClick < 300) {
+            if (timeSinceLastClick < 500) {
               openDir(directory);
             } else {
               setClickCount(clickCount + 1);
