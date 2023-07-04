@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import addFolder from "./assets/icons/add-folder.png";
 import addFile from "./assets/icons/add-file.png";
+import folderImg from "./assets/icons/folder.svg";
+import fileImg from "./assets/icons/file.svg";
 import { Dropdown, Menu } from "antd";
 
 type DirDetails = {
@@ -15,7 +17,6 @@ function App() {
   const [directory, setDirectory] = useState("");
   const [dirD, setDirD] = useState<DirDetails[]>([]);
 
-  const [clickCount, setClickCount] = useState(0);
   const [lastClickTime, setLastClickTime] = useState(0);
 
   const menu = (
@@ -66,31 +67,50 @@ function App() {
     await invoke("create_file", { dirname });
   }
 
+  const check_dir = (dir : DirDetails) => {
+    if (dir.metadata === "dir") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   return (
     <div>
       <Dropdown overlay={menu} trigger="contextMenu">
-        <div className="container">
-          <button onClick={goBack}></button>
+        <div>
           <h1>Wormhole</h1>
-          {dirD.map((dir) => (
-            <form
-              className="row"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const now = new Date().getTime();
-                const timeSinceLastClick = now - lastClickTime;
-                if (timeSinceLastClick < 500) {
-                  openDir(directory);
-                } else {
-                  setClickCount(clickCount + 1);
-                  setLastClickTime(now);
-                  setDirectory(dir.path);
-                }
-              }}
-            >
-              <button type="submit">{dir.name}</button>
-            </form>
-          ))}
+          <button onClick={goBack}></button>
+          <div className="container">
+            {dirD.map((dir) => (
+              <form
+                className="row"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const now = new Date().getTime();
+                  const timeSinceLastClick = now - lastClickTime;
+                  if (timeSinceLastClick < 500) {
+                    openDir(directory);
+                  } else {
+                    setLastClickTime(now);
+                    setDirectory(dir.path);
+                  }
+                }}
+              >
+                <div className="folder">
+                  <button type="submit">
+                    {check_dir(dir) ? (
+                      <img src={folderImg} className="folder-img" alt ="logo" />
+                    ) : (
+                      <img src={fileImg} className="folder-img" alt ="logo" />
+                    )}
+                    {/* <img src={folderImg} className="folder-img" alt ="logo" /> */}
+                    <p className="folder-name">{dir.name}</p>
+                  </button>
+                </div>
+              </form>
+            ))}
+          </div>
         </div>
       </Dropdown>
     </div>
