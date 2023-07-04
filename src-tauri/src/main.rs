@@ -28,10 +28,10 @@ fn create_file(filename: &str) {
     files::create_file(filename)
 }
 
-// #[tauri::command]
-// fn go_back(current_path: &str) -> Vec<String> {
-//     files::go_back(current_path)
-// }
+#[tauri::command]
+fn go_back() -> Vec<files::DirDetails> {
+    files::go_back()
+}
 
 fn main() {
     tauri::Builder::default()
@@ -40,7 +40,7 @@ fn main() {
                         open_dir,
                         create_dir,
                         create_file,
-                        // go_back,
+                        go_back,
                         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

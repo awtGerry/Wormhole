@@ -36,7 +36,7 @@ function App() {
           label: "Create File",
           key: "2",
           icon: <img src={addFile} className="menu_logo" alt ="logo" />,
-          onClick: () => { create_file("wormfile") }
+          onClick: () => { create_file("wormfile.txt") }
         }
       ]}
     ></Menu>

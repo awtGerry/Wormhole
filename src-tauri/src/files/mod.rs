@@ -1,8 +1,12 @@
 #![allow(unused)]
 #![allow(unused_imports)]
 
-use std::fs;
-use std::path::Path;
+use std::{
+    fs,
+    env,
+    path::Path,
+    path::PathBuf
+};
 use users::{get_user_by_uid, get_current_uid, os::unix::UserExt};
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
@@ -92,9 +96,7 @@ pub fn create_dir(dirname: &str) {
     let dir_path = current_dir.join(dirname);
     println!("Directory path: {}", dir_path.display());
     match fs::create_dir(dir_path) {
-        Ok(_) => {
-            println!("Directory created");
-        }
+        Ok(_) => {}
         Err(err) => {
             println!("Error: {}", err);
         }
@@ -103,13 +105,23 @@ pub fn create_dir(dirname: &str) {
 
 pub fn create_file(filename: &str) {
     let current_dir = std::env::current_dir().unwrap();
-    let dir_path = current_dir.join(filename);
-    match fs::File::create(dir_path) {
+    let file_path = current_dir.join(filename);
+    match fs::File::create(file_path) {
         Ok(_) => {
-            println!("File created");
+            println!("File created successfully");
         }
         Err(err) => {
             println!("Error: {}", err);
         }
     }
+}
+
+pub fn go_back() -> Vec<DirDetails> {
+    let mut result: Vec<DirDetails> = Vec::new();
+    let current_dir = env::current_dir().expect("Failed to get current directory");
+    let previous_dir = current_dir
+        .parent()
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("/"));
+    move_to(previous_dir.to_str().unwrap())
 }
