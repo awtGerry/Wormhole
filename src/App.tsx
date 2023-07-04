@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
+import addFolder from "./assets/icons/add-folder.png";
+import addFile from "./assets/icons/add-file.png";
 import { Dropdown, Menu } from "antd";
-import "./App.css";
 
 type DirDetails = {
   path: string;
@@ -28,11 +29,13 @@ function App() {
         {
           label: "Create Directory",
           key: "1",
+          icon: <img src={addFolder} className="menu_logo" alt ="logo" />,
           onClick: () => { create_dir("wormdir") }
         },
         {
           label: "Create File",
           key: "2",
+          icon: <img src={addFile} className="menu_logo" alt ="logo" />,
           onClick: () => { create_file("wormfile") }
         }
       ]}
