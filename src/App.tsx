@@ -70,7 +70,7 @@ function App() {
     <div>
       <Dropdown overlay={menu} trigger="contextMenu">
         <div className="container">
-          <button onClick={goBack}>Go Back</button>
+          <button onClick={goBack}></button>
           <h1>Wormhole</h1>
           {dirD.map((dir) => (
             <form
