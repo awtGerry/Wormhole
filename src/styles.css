@@ -23,17 +23,6 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
 .row {
   display: flex;
   justify-content: center;
@@ -92,6 +81,14 @@ button {
   :root {
     color: #f6f6f6;
     background-color: #2f2f2f;
+  }
+
+  :where(.css-dev-only-do-not-override-14wwjjs).ant-dropdown .ant-dropdown-menu, :where(.css-dev-only-do-not-override-14wwjjs).ant-dropdown-menu-submenu .ant-dropdown-menu {
+    background-color: #2f2f2f;
+  }
+
+  .ant-dropdown-menu-title-content {
+    color: #f6f6f6;
   }
 
   a:hover {

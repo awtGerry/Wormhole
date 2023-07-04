@@ -1,3 +1,6 @@
+#![allow(unused)]
+#![allow(unused_imports)]
+
 use std::fs;
 use std::path::Path;
 use users::{get_user_by_uid, get_current_uid, os::unix::UserExt};
@@ -63,21 +66,50 @@ pub fn move_to(dir_path: &str) -> Vec<DirDetails> {
             println!("Error: {}", err);
         }
     }
+    set_current_dir(dir_path);
     result
 }
 
-pub fn file() -> Vec<DirDetails> {
+fn set_current_dir(dir_path: &str) {
+    match std::env::set_current_dir(dir_path) {
+        Ok(_) => {}
+        Err(err) => {
+            println!("Error: {}", err);
+        }
+    }
+}
+
+pub fn home_file() -> Vec<DirDetails> {
     let mut result: Vec<DirDetails> = Vec::new();
     let user = get_user_by_uid(get_current_uid()).unwrap();
     let dir_path = user.home_dir().to_str().unwrap();
-    let dir = fs::read_dir(dir_path).unwrap();
-    for entry in dir {
-        let entry = entry.unwrap();
-        let path = entry.path();
-        if !is_dotfile(&path) {
-            let dir_details = create_dir_details(path.to_str().unwrap());
-            result.push(dir_details);
+    move_to(dir_path)
+}
+
+pub fn create_dir(dirname: &str) {
+    let current_dir = std::env::current_dir().unwrap();
+    println!("Current directory: {}", current_dir.display());
+    let dir_path = current_dir.join(dirname);
+    println!("Directory path: {}", dir_path.display());
+    match fs::create_dir(dir_path) {
+        Ok(_) => {
+            println!("Directory created");
+        }
+        Err(err) => {
+            println!("Error: {}", err);
         }
     }
-    result
+}
+
+pub fn create_file(filename: &str) {
+    let current_dir = std::env::current_dir().unwrap();
+    let dir_path = current_dir.join(filename);
+    match fs::File::create(dir_path) {
+        Ok(_) => {
+            println!("File created");
+        }
+        Err(err) => {
+            println!("Error: {}", err);
+        }
+    }
 }
