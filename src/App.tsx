@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
+import { listen } from "@tauri-apps/api/event";
 import addFolder from "./assets/icons/add-folder.png";
 import addFile from "./assets/icons/add-file.png";
 import folderImg from "./assets/icons/folder.svg";

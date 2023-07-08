@@ -3,7 +3,7 @@
 
 use std::{
     fs,
-    env,
+    env::{self, current_dir},
     path::Path,
     path::PathBuf
 };
@@ -92,11 +92,11 @@ pub fn home_file() -> Vec<DirDetails> {
 
 pub fn create_dir(dirname: &str) {
     let current_dir = std::env::current_dir().unwrap();
-    println!("Current directory: {}", current_dir.display());
     let dir_path = current_dir.join(dirname);
-    println!("Directory path: {}", dir_path.display());
     match fs::create_dir(dir_path) {
-        Ok(_) => {}
+        Ok(_) => {
+            println!("Directory created successfully");
+        }
         Err(err) => {
             println!("Error: {}", err);
         }
