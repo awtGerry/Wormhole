@@ -2,12 +2,12 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:1420",
+    "devPath": "http://localhost:8080",
     "distDir": "../dist",
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "Wormhole",
+    "productName": "wormhole",
     "version": "0.0.0"
   },
   "tauri": {
@@ -37,7 +37,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Wormhole",
+        "title": "wormhole",
         "width": 800,
         "height": 600
       }

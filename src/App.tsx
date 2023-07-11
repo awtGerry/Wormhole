@@ -14,9 +14,25 @@ type DirDetails = {
   metadata: string;
 };
 
+type ExternalDisk = {
+  name: string;
+  mount_point: string;
+  total_space: number;
+  available_space: number;
+  is_removable: boolean;
+}
+
+type MainDisk = {
+  name: string;
+  total_space: number;
+  available_space: number;
+}
+
 function App() {
   const [directory, setDirectory] = useState("");
   const [dirD, setDirD] = useState<DirDetails[]>([]);
+  const [externalDisk, setExternalDisk] = useState<ExternalDisk[]>([]);
+  const [mainDisk, setMainDisk] = useState<MainDisk>("");
 
   const [lastClickTime, setLastClickTime] = useState(0);
 
@@ -50,6 +66,8 @@ function App() {
 
   const onCreate = async () => {
     setDirD(await invoke("home_dir"));
+    setMainDisk(await invoke("main_disk"));
+    setExternalDisk(await invoke("external_disks"));
   }
 
   const openDir = async (dirname : string) => {
@@ -80,8 +98,23 @@ function App() {
     <div>
       <Dropdown overlay={menu} trigger="contextMenu">
         <div>
-          <h1>Wormhole</h1>
           <button onClick={goBack}></button>
+          <div className="main_disk">
+            <p>Primary Drive: {mainDisk.name}</p>
+            <p>Total Size: {mainDisk.total_space} GB</p>
+            <p>Free Size: {mainDisk.available_space} GB</p>
+          </div>
+          <div className="external_disk">
+            <p>External Drive</p>
+            {externalDisk.map((disk) => (
+              <div>
+                <p>Name: {disk.name}</p>
+                <p>Mount Point: {disk.mount_point}</p>
+                <p>Total Size: {disk.total_space} GB</p>
+                <p>Free Size: {disk.available_space} GB</p>
+              </div>
+            ))}
+          </div>
           <div className="container">
             {dirD.map((dir) => (
               <form

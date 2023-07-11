@@ -1,8 +1,8 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// use Wormhole::test;
-use Wormhole::files;
+// use wormhole::test;
+use wormhole::{files, disk};
 
 // call files.rs
 // mod files;
@@ -33,6 +33,16 @@ fn go_back() -> Vec<files::DirDetails> {
     files::go_back()
 }
 
+#[tauri::command]
+fn main_disk() -> disk::MainDisk {
+    disk::return_main_disk()
+}
+
+#[tauri::command]
+fn external_disks() -> Vec<disk::ExternalDisk> {
+    disk::return_external_disks()
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -41,6 +51,8 @@ fn main() {
                         create_dir,
                         create_file,
                         go_back,
+                        main_disk,
+                        external_disks,
                         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
